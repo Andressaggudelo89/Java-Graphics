@@ -45,41 +45,36 @@ public class Points extends JPanel {
 
         g2d.drawLine(0, h / 2, w, h / 2);
         g2d.drawLine(w / 2, 0, w / 2, h);
+        
+        for (int i = 15; i <= 90; i+=15) {
+            coordinates(g2d, i, w, h);
+        }
+    }
+    
+    public void coordinates(Graphics2D g2d, int angle, int w, int h){
         g2d.setColor(Color.blue);
-
-        int x1 = -200, y1 = 0, x2 = 0, y2 = 200;
-        bresenham(w, h, g2d, x1, y1, x2, y2, 1);
-        bresenham(w, h, g2d, x1, y1, x2, y2, -1);
-
-        x1 = 200; y1 = 0; x2 = 0; y2 = 200;
-        bresenham2(w, h, g2d, x1, y1, x2, y2, 1);
-        bresenham2(w, h, g2d, x1, y1, x2, y2, -1);
-        
         Point points[] = new Point[5];
-        
-        
-        int angl = 45;
+        //g2d.setStroke(new BasicStroke(2));
         for (int i = 0; i < 4; i++) {
-            g2d.setStroke(new BasicStroke(5));
-            int x_pos = (int)Math.round(200*Math.cos(Math.toRadians(angl)));
-            int y_pos  = (int)Math.round(200*Math.sin(Math.toRadians(angl)));
+            int x_pos = (int)Math.round(200*Math.cos(Math.toRadians(angle)));
+            int y_pos  = (int)Math.round(200*Math.sin(Math.toRadians(angle)));
             points[i] = new Point(x_pos, y_pos);
             g2d.drawLine(w/2+x_pos, h/2+y_pos, w/2+x_pos, h/2+y_pos);
-            angl += 90;
+            angle += 90;
         }
         points[4] = new Point(points[0].x, points[0].y);
         
-        for (int i = 0; i < 5; i++) {
-            System.out.println("X: "+points[i].x+". Y: "+points[i].y);
-        }
-        
+        g2d.drawLine(w/2-points[0].x, h/2-points[0].y, w/2-points[1].x, h/2-points[1].y);
+        g2d.drawLine(w/2+points[1].x, h/2+points[1].y, w/2+points[2].x, h/2+points[2].y);
+        g2d.drawLine(w/2-points[2].x, h/2-points[2].y, w/2-points[3].x, h/2-points[3].y);
+        g2d.drawLine(w/2+points[3].x, h/2+points[3].y, w/2+points[4].x, h/2+points[4].y);
         
     }
 
     public void bresenham(int w, int h, Graphics2D g2d, int x1, int y1, int x2, int y2, int sign) {
 
-        int dx = x2 - x1;
-        int dy = y2 - y1;
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
         // Transformaion
         x1 += w / 2;
         y1 += h / 2;
@@ -89,30 +84,6 @@ public class Points extends JPanel {
         int d = 2 * dy - dx;
         int y = y1;
         for (int x = x1; x <= x2; x++) {
-            g2d.drawLine(x, y, x, y);
-            if (d <= 0) {
-                d += incE;
-            } else {
-                d += incNE;
-                y += 1 * sign;
-            }
-        }
-
-    }
-
-    public void bresenham2(int w, int h, Graphics2D g2d, int x1, int y1, int x2, int y2, int sign) {
-
-        int dx = x2 - x1;
-        int dy = y2 - y1;
-        // Transformaion
-        x1 += w / 2;
-        y1 += h / 2;
-        x2 += w / 2;
-        int incE = 2 * dy;
-        int incNE = 2 * dy - 2 * dx;
-        int d = 2 * dy - dx;
-        int y = y1;
-        for (int x = x1; x >= x2; x--) {
             g2d.drawLine(x, y, x, y);
             if (d <= 0) {
                 d += incE;
