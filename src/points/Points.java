@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+import java.awt.Point;
 
 public class Points extends JPanel {
 
@@ -44,22 +45,35 @@ public class Points extends JPanel {
 
         g2d.drawLine(0, h / 2, w, h / 2);
         g2d.drawLine(w / 2, 0, w / 2, h);
-
         g2d.setColor(Color.blue);
 
         int x1 = -200, y1 = 0, x2 = 0, y2 = 200;
         bresenham(w, h, g2d, x1, y1, x2, y2, 1);
         bresenham(w, h, g2d, x1, y1, x2, y2, -1);
 
-        x1 = 200;
-        y1 = 0;
-        x2 = 0;
-        y2 = 200;
+        x1 = 200; y1 = 0; x2 = 0; y2 = 200;
         bresenham2(w, h, g2d, x1, y1, x2, y2, 1);
         bresenham2(w, h, g2d, x1, y1, x2, y2, -1);
-
-        //g2d.setStroke(new BasicStroke(4));
-        //g2d.drawLine(w/2, h/2, w/2, h/2);
+        
+        Point points[] = new Point[5];
+        
+        
+        int angl = 45;
+        for (int i = 0; i < 4; i++) {
+            g2d.setStroke(new BasicStroke(5));
+            int x_pos = (int)Math.round(200*Math.cos(Math.toRadians(angl)));
+            int y_pos  = (int)Math.round(200*Math.sin(Math.toRadians(angl)));
+            points[i] = new Point(x_pos, y_pos);
+            g2d.drawLine(w/2+x_pos, h/2+y_pos, w/2+x_pos, h/2+y_pos);
+            angl += 90;
+        }
+        points[4] = new Point(points[0].x, points[0].y);
+        
+        for (int i = 0; i < 5; i++) {
+            System.out.println("X: "+points[i].x+". Y: "+points[i].y);
+        }
+        
+        
     }
 
     public void bresenham(int w, int h, Graphics2D g2d, int x1, int y1, int x2, int y2, int sign) {
