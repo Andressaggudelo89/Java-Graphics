@@ -46,7 +46,7 @@ public class Points extends JPanel {
         g2d.drawLine(0, h / 2, w, h / 2);
         g2d.drawLine(w / 2, 0, w / 2, h);
         
-        int angle = 30;
+        int angle = 45;
         int ang = angle;
         Point points[] = new Point[5];
         for (int i = 0; i < 4; i++) {
@@ -65,26 +65,21 @@ public class Points extends JPanel {
     public void bresenham(Graphics g, Point points[], int w, int h, int angle){
         g.setColor(Color.blue);
         for (int i = 0; i < 4; i++) {
-            
             int x1 = points[i].x;
             int y1 = points[i].y;
             int x2 = points[i+1].x;
             int y2 = points[i+1].y;
             int dx = Math.abs(x2-x1);
             int dy = Math.abs(y2-y1);
-
-            if(Math.abs((float)dy/dx)<=1 && (i == 0 || i == 2) ){ //Solo funciona para 2 de las 4 líneas
-                System.out.println("Move on 'x'");
-
+            
+            if(((float)dy/dx)<=1 && (i==0 || i==2)){ //Solo funciona para 2 de las 4 líneas
                 int incE = 2*dy;
                 int incNE = incE - 2*dx;
                 int d = incE - dx;
-
-
+                int y;
                 if(x1<x2){
-                    int y = y1;
+                    y = y1;
                     if(angle<=45){
-                        System.out.println("el ciclo va de x1 a x2, increasing. 'Y' decrementa.");
                         for (int x = x1; x <= x2; x++) {
                             g.drawLine(x, y, x, y);
                             if(d<=0){
@@ -95,7 +90,6 @@ public class Points extends JPanel {
                             }
                         }
                     }else{
-                        System.out.println("el ciclo va de x1 a x2, increasing. 'Y' aumenta.");
                         for (int x = x1; x <= x2; x++) {
                             g.drawLine(x, y, x, y);
                             if(d<=0){
@@ -107,9 +101,8 @@ public class Points extends JPanel {
                         }
                     }
                 }else{
-                    int y = y2;
+                    y = y2;
                     if(angle<=45){
-                        System.out.println("el ciclo va de x2 a x1, decreasing. 'Y' decrementa.");
                         for (int x = x2; x <= x1; x++) {
                             g.drawLine(x, y, x, y);
                             if(d<=0){
@@ -120,7 +113,6 @@ public class Points extends JPanel {
                             }
                         }
                     }else{
-                        System.out.println("el ciclo va de x2 a x1, decreasing. 'Y' incrementa.");
                         for (int x = x2; x <= x1; x++) {
                             g.drawLine(x, y, x, y);
                             if(d<=0){
@@ -131,21 +123,71 @@ public class Points extends JPanel {
                             }
                         }
                     }
-                    // el ciclo va de x2 a x1, decreasing, Y aumenta
+                }
+            }
+            if(((float)dy/dx)>=1 && (i==1 || i==3)){
+                int incE = 2*dx;
+                int incNE = incE - 2*dy;
+                int d = incE - dy;
+                int x;
+                if(y1<y2){
+                    x = x1;
+                    if(angle<=45){
+                        System.out.println("from y1 to y2. X increases");
+                        for (int y = y1; y <= y2; y++) {
+                            g.drawLine(x, y, x, y);
+                            if(d<=0){
+                                d += incE;
+                            }else{
+                                d += incNE;
+                                x += 1;
+                            }
+                        }
+                    }else{
+                        System.out.println("from y1 to y2. X decreases");
+                        for (int y = y1; y <= y2; y++) {
+                            g.drawLine(x, y, x, y);
+                            if(d<=0){
+                                d += incE;
+                            }else{
+                                d += incNE;
+                                x -= 1;
+                            }
+                        }
+                    }
+                }else{
+                    x = x2;
+                    if(angle<=45){
+                        System.out.println("from y2 to y1. X decreases");
+                        for (int y = y2; y <= y1; y++) {
+                            g.drawLine(x, y, x, y);
+                            if(d<=0){
+                                d += incE;
+                            }else{
+                                d += incNE;
+                                x += 1;
+                            }
+                        }
+                    }else{
+                        System.out.println("from y2 to y1. X increases");
+                        for (int y = y2; y <= y1; y++) {
+                            g.drawLine(x, y, x, y);
+                            if(d<=0){
+                                d += incE;
+                            }else{
+                                d += incNE;
+                                x -= 1;
+                            }
+                        }
+                    }
                 }
             }
         }
-        
-        
-        
-        
-        
-//        if(Math.abs((float)dy/dx)>1 /* && (i == 1 || i == 3) */){
-//            System.out.println("Move on 'y'");
-//        }
-    
     }
     
+    private void function(Graphics g, int val1, int val2, int d, int incE, int incNE){
+        
+    }
     
     public void coordinates(Graphics2D g2d, int w, int h, Point points[]){
         g2d.setColor(Color.blue);        
