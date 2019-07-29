@@ -46,19 +46,19 @@ public class Points extends JPanel {
         g2d.drawLine(0, h / 2, w, h / 2);
         g2d.drawLine(w / 2, 0, w / 2, h);
         
-        int angle = 45;
-        int ang = angle;
-        Point points[] = new Point[5];
-        for (int i = 0; i < 4; i++) {
-            int x_pos = (int)Math.round(200*Math.cos(Math.toRadians(angle)));
-            int y_pos  = (int)Math.round(200*Math.sin(Math.toRadians(angle)));
-            points[i] = new Point(w/2+x_pos, h/2+y_pos);
-            angle += 90;
+        for (int j = 4; j <= 90; j+=15) {
+            int angle = j;
+            int ang = angle;
+            Point points[] = new Point[5];
+            for (int i = 0; i < 4; i++) {
+                int x_pos = (int)Math.round(200*Math.cos(Math.toRadians(angle)));
+                int y_pos  = (int)Math.round(200*Math.sin(Math.toRadians(angle)));
+                points[i] = new Point(w/2+x_pos, h/2+y_pos);
+                angle += 90;
+            }
+            points[4] = new Point(points[0].x, points[0].y);
+            bresenham(g2d, points, w, h, ang);
         }
-        points[4] = new Point(points[0].x, points[0].y);
-        
-        coordinates(g2d, w, h, points);
-        bresenham(g2d, points, w, h, ang);
     }
     
     
@@ -80,48 +80,16 @@ public class Points extends JPanel {
                 if(x1<x2){
                     y = y1;
                     if(angle<=45){
-                        for (int x = x1; x <= x2; x++) {
-                            g.drawLine(x, y, x, y);
-                            if(d<=0){
-                                d += incE;
-                            }else{
-                                d += incNE;
-                                y -= 1;
-                            }
-                        }
+                        function(g, x1, x2, y, d, incE, incNE, -1);
                     }else{
-                        for (int x = x1; x <= x2; x++) {
-                            g.drawLine(x, y, x, y);
-                            if(d<=0){
-                                d += incE;
-                            }else{
-                                d += incNE;
-                                y += 1;
-                            }
-                        }
+                        function(g, x1, x2, y, d, incE, incNE, 1);
                     }
                 }else{
                     y = y2;
                     if(angle<=45){
-                        for (int x = x2; x <= x1; x++) {
-                            g.drawLine(x, y, x, y);
-                            if(d<=0){
-                                d += incE;
-                            }else{
-                                d += incNE;
-                                y -= 1;
-                            }
-                        }
+                        function(g, x2, x1, y, d, incE, incNE, -1);
                     }else{
-                        for (int x = x2; x <= x1; x++) {
-                            g.drawLine(x, y, x, y);
-                            if(d<=0){
-                                d += incE;
-                            }else{
-                                d += incNE;
-                                y += 1;
-                            }
-                        }
+                        function(g, x2, x1, y, d, incE, incNE, 1);
                     }
                 }
             }
@@ -133,18 +101,8 @@ public class Points extends JPanel {
                 if(y1<y2){
                     x = x1;
                     if(angle<=45){
-                        System.out.println("from y1 to y2. X increases");
-                        for (int y = y1; y <= y2; y++) {
-                            g.drawLine(x, y, x, y);
-                            if(d<=0){
-                                d += incE;
-                            }else{
-                                d += incNE;
-                                x += 1;
-                            }
-                        }
+                        function2(g, y1, y2, x, d, incE, incNE, 1);
                     }else{
-                        System.out.println("from y1 to y2. X decreases");
                         for (int y = y1; y <= y2; y++) {
                             g.drawLine(x, y, x, y);
                             if(d<=0){
@@ -158,18 +116,8 @@ public class Points extends JPanel {
                 }else{
                     x = x2;
                     if(angle<=45){
-                        System.out.println("from y2 to y1. X decreases");
-                        for (int y = y2; y <= y1; y++) {
-                            g.drawLine(x, y, x, y);
-                            if(d<=0){
-                                d += incE;
-                            }else{
-                                d += incNE;
-                                x += 1;
-                            }
-                        }
+                        function2(g, y2, y1, x, d, incE, incNE, 1);
                     }else{
-                        System.out.println("from y2 to y1. X increases");
                         for (int y = y2; y <= y1; y++) {
                             g.drawLine(x, y, x, y);
                             if(d<=0){
@@ -185,18 +133,29 @@ public class Points extends JPanel {
         }
     }
     
-    private void function(Graphics g, int val1, int val2, int d, int incE, int incNE){
-        
-    }
-    
-    public void coordinates(Graphics2D g2d, int w, int h, Point points[]){
-        g2d.setColor(Color.blue);        
-        for (int i = 0; i < 1; i++) {
-            //g2d.drawLine(points[i].x, points[i].y, points[i+1].x, points[i+1].y);
-            //System.out.println("x1: "+points[i].x+"  y1: "+points[i].y+"    x2: "+points[i+1].x+"  y2: "+points[i+1].y);
+    private void function2(Graphics g, int y1, int y2, int x, int d, int incE, int incNE, int sign){
+        for (int y = y1; y <= y2; y++) {
+            g.drawLine(x, y, x, y);
+            if(d<=0){
+                d += incE;
+            }else{
+                d += incNE;
+                x += 1;
+            }
         }
     }
-   
+    
+    private void function(Graphics g, int x1, int x2, int y, int d, int incE, int incNE, int sign){
+        for (int x = x1; x <= x2; x++) {
+            g.drawLine(x, y, x, y);
+            if(d<=0){
+                d += incE;
+            }else{
+                d += incNE;
+                y += 1 * sign;
+            }
+        }
+    }
 
     public static void main(String[] args) {
 
