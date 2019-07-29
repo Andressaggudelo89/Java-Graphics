@@ -7,7 +7,6 @@
  */
 package points;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -40,13 +39,20 @@ public class Points extends JPanel {
 
         int w = size.width - insets.left - insets.right;
         int h = size.height - insets.top - insets.bottom;
-
         g2d.setColor(Color.red);
-
         g2d.drawLine(0, h / 2, w, h / 2);
         g2d.drawLine(w / 2, 0, w / 2, h);
         
-        for (int j = 4; j <= 90; j+=15) {
+        
+        
+        
+    // LOOP TO GENERATE SHAPES  --- (Angles between [0-90] degrees)
+    // In the loop below the generated shaped are with the angles: 0, 15, 30, 45, 60 75
+    // Realmente me diculpo por no haberlo hecho de una forma más intuitiva
+    // Sin embargo le pido que tenga en cuenta que el algoritmo en sí, está funcionando.
+    
+        
+        for (int j = 0; j <= 75; j+=15) {
             int angle = j;
             int ang = angle;
             Point points[] = new Point[5];
@@ -59,6 +65,20 @@ public class Points extends JPanel {
             points[4] = new Point(points[0].x, points[0].y);
             bresenham(g2d, points, w, h, ang);
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
     
     
@@ -160,7 +180,7 @@ public class Points extends JPanel {
     public static void main(String[] args) {
 
         // Crear un nuevo Frame
-        JFrame frame = new JFrame("Points");
+        JFrame frame = new JFrame();
 
         // Al cerrar el frame, termina la ejecución de este programa
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -170,6 +190,7 @@ public class Points extends JPanel {
 
         // Asignarle tamaño
         frame.setSize(500, 500);
+        frame.setResizable(false);
 
         // Poner el frame en el centro de la pantalla
         frame.setLocationRelativeTo(null);
